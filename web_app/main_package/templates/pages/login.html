@@ -1,0 +1,73 @@
+{% extends 'pages/base.html' %} {% block title %}Weather App | Login{% endblock
+title %} {% block main %}
+<form method="post" action="/login" class="auth-form">
+  <h1>Welcome back!</h1>
+  <div class="form-group">
+    <label for="emailInput">Email address</label>
+    <input
+      name="email"
+      type="email"
+      class="form-control input"
+      id="emailInput"
+      aria-describedby="emailHelp"
+      placeholder="Enter email"
+    />
+  </div>
+  <div class="form-group">
+    <label for="passwordInput">Password</label>
+    <div class="input-with-icon">
+      <input
+        name="password"
+        type="password"
+        class="form-control input"
+        id="passwordInput"
+        placeholder="Password"
+      />
+      <span id="eye-btn-1"
+        >{%include "icons/eye.svg"%}{%include "icons/eye-off.svg"%}</span
+      >
+      <!--button tag messes up styling-->
+    </div>
+    <small
+      id="passwordHelpBlock"
+      class="form-text text-muted"
+      style="width: 100%; display: flex; justify-content: right"
+    >
+      <a href="#" style="">Forgot your password?</a>
+    </small>
+  </div>
+  {%with messages = get_flashed_messages(with_categories=true)%} {%if messages
+  %} {%for category, message in messages%} {% if category == "error"%}
+  <div style="position: relative; width: 100%">
+    <div
+      class="alert alert-danger alert-dismissible fade show"
+      role="alert"
+      style="position: absolute; width: 100%"
+    >
+      {{message}}
+      <span
+        type="button"
+        class="close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      >
+        <span
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          ><span aria-hidden="true">&times;</span></span
+        >
+      </span>
+    </div>
+  </div>
+  {%endif%} {%endfor%} {%endif%} {%endwith%}
+  <button
+    type="submit"
+    class="btn submit-button"
+    style="width: 100%; margin-top: 56px; margin-top: 64px"
+  >
+    Submit
+  </button>
+</form>
+{% endblock main %}

@@ -1,0 +1,36 @@
+{% extends 'pages/base.html' %} {% block title %}Home{% endblock title %} {%
+block main %}
+<section
+  style="width: 60%; margin-top: 48px; margin-right: auto; margin-left: auto"
+>
+  <form method="POST" action="/profile">
+    <div class="form-group">
+      <label for="newCityInput">City you want to add</label>
+      <input
+        name="newCity"
+        type="newCity"
+        class="form-control input"
+        id="newCityInput"
+        aria-describedby="newCityInput"
+        placeholder="Enter name of a city you want to add to your list"
+      />
+    </div>
+    <button
+      type="submit"
+      class="btn submit-button"
+      style="width: 100%; margin-top: 56px; margin-top: 64px"
+    >
+      Add city
+    </button>
+  </form>
+  <ul>
+    {% for city in favCityList %}
+    <li>{{city.name}}</li>
+    <form action="/profile/del-city/{{city.name}}" method="post">
+      <button>X</button>
+    </form>
+    {% endfor %}
+  </ul>
+</section>
+
+{% endblock main %}

@@ -1,0 +1,57 @@
+{% extends 'pages/base.html' %} {% block title %}Home{% endblock title %} {%
+block main %}
+<div
+  id="landing-page"
+  class="content-full-screen"
+  style="background-color: var(--dark-blue)"
+>
+  <div
+    style="
+      position: absolute;
+      top: 56px;
+      left: 96px;
+      color: white;
+      z-index: 50px;
+    "
+  >
+    <h1>Welcome to Weather.io</h1>
+    <p>
+      Our platform brings you the world's weather in real-time, right at your
+      fingertips.
+    </p>
+
+    <h2>Why Choose Us?</h2>
+    <li>🌍 Worldwide Coverage: Explore current conditions across the globe.</li>
+    <li>🚀 Instant Updates: Stay ahead with lightning-fast weather updates.</li>
+    <li>
+      🎨 Visually Stunning: Our vibrant interface makes checking weather a
+      delight.
+    </li>
+    <h2>Seamless Experience:</h2>
+
+    <li>
+      🔍 Intuitive Search: Effortlessly find weather info for any location.
+    </li>
+    <li>📈 Detailed Insights: Dive deep into temperature, wind, and more.</li>
+  </div>
+
+  <div style="width: 33.33%; height: 100%">
+    <img
+      src="{{url_for('static', filename='images/pic1.jpg') }}"
+      class="landing-img"
+    />
+  </div>
+  <div style="width: 33.33%; height: 100%">
+    <img
+      src="{{url_for('static', filename='images/pic2.jpg') }}"
+      class="landing-img"
+    />
+  </div>
+  <div style="width: 33.33%; height: 100%">
+    <img
+      src="{{url_for('static', filename='images/pic3.jpg') }}"
+      class="landing-img"
+    />
+  </div>
+</div>
+{% endblock main %}
