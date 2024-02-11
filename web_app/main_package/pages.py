@@ -1,9 +1,11 @@
 import random
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
-import urllib.request, json
+import requests
+from requests.structures import CaseInsensitiveDict
+from .helper import getWeatherdata
 
-from .settings import OPEN_WEATHER_MAP_KEY
+from .settings import GEOAPIFY_KEY, OPEN_WEATHER_MAP_KEY
 from .variables import larger_capital_cities as capital_cities
 from .models import City
 from . import db
@@ -14,37 +16,89 @@ pages = Blueprint('pages', __name__)
 def home():
     return render_template('pages/index.html')
 
-@pages.route('/current-weather/', methods=['GET', 'POST']) #to do
-def current_weather():
+@pages.post('/search-city/')
+def search_city():
+    city_to_search = request.form.get('search')
+    return redirect(url_for('pages.current_weather', search=city_to_search))
+
+@pages.post('/device-loc/')
+def device_loc():
+    request_data = request.get_json()
+    lat = str(request_data['lat'])
+    lon = str(request_data['lon'])
     
-    if request.method == 'POST':
-        city_to_search = request.form.get('search')
-        return redirect(url_for('pages.current_weather', search=city_to_search))
+    # if some unexpected error happened and data are missing redirect to ip location
+    if not lat or not lon: return redirect(url_for('pages.current_weather', search="MY-LOCATION"))
+    else: return redirect(url_for('pages.current_weather', lat=lat, lon=lon))
+
+@pages.route('/current-weather/') #to do
+def current_weather():
+         
+    # init
+    weather_data = {}  
+    search = request.args.get('search')
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+    
+    # check for coords
+    if lat and lon:
+        url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OPEN_WEATHER_MAP_KEY}&units=metric"
+        weather_data, error = getWeatherdata(url)
         
-    if request.method == 'GET' and request.args.get('search') == None:
+        # if error redirect to ip location
+        if error: return redirect(url_for('pages.current_weather', search="MY-LOCATION"))
+        else: 
+            # change city in url to current
+            if search != weather_data['name']:
+                return redirect(url_for('pages.current_weather', search=weather_data['name'], lat=lat, lon=lon))
+    elif (lon and not lat) or (lat and not lon):
+        return redirect(url_for('pages.current_weather', search=search))
+    
+    # if lat,lon,search are none generate random
+    if not search:
         city_to_search = capital_cities[random.randint(0, len(capital_cities)-1)]
         return redirect(url_for('pages.current_weather', search=city_to_search))
-     
-    search = request.args.get('search')
-    dict = {}
-    try:
-        search = search.replace(" ", "%20")
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={search}&appid={OPEN_WEATHER_MAP_KEY}"
+    
+    # my location if browser location is not permited
+    if search == 'MY-LOCATION':
+        ip = request.remote_addr
+        capCity = None
+        try: 
+            ip = '84.245.80.28' # to do
+            url = f'https://api.geoapify.com/v1/ipinfo?ip={ip}&apiKey={GEOAPIFY_KEY}'
+            
+            headers = CaseInsensitiveDict()
+            headers["Accept"] = "application/json"
 
-        response = urllib.request.urlopen(url)
-        data = response.read()
-        dict = json.loads(data)
+            res = requests.get(url, headers=headers)
+            data = res.json()
+            
+            capCity = data['country']['capital']
+        except: 
+            flash("Sorry something went wrong. We couldn't get your location :(", category='error-global')
         
-    except: 
-        dict["name"] = "NOT FOUND"
+        return redirect(url_for('pages.current_weather', search=capCity))
+
+    if not lat:
+        search = search.replace(" ", "%20")
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={search}&appid={OPEN_WEATHER_MAP_KEY}&units=metric"
+                    
+        weather_data, error = getWeatherdata(url)
+
+        if error:
+            weather_data["name"] = "NOT FOUND"
         
     favCityList = []
-    try:
-        favCityList = current_user.city
-    except:
-        print('Couldnt get user fav cities') 
+    if current_user:
+        try:
+            favCityList = current_user.city
+        except:
+            flash("You have no favourite cities. Add them in your profile.", category='warning-global') 
+    else:
+        flash("You must be logged in to set your favourite cities.", category='warning-global') 
     
-    return render_template('pages/current_weather.html', favCityList=favCityList, weatherData=dict, user=current_user)
+    
+    return render_template('pages/current_weather.html', favCityList=favCityList, weatherData=weather_data, user=current_user)
 
 
 

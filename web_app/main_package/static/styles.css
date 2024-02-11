@@ -22,6 +22,7 @@
 html,
 body {
   font-family: "Jura", sans-serif;
+  font-size: 16px;
   background-color: var(--purple-pink);
   margin: 0;
   padding: 0;
@@ -40,6 +41,15 @@ body {
 /**
 custom styles ------------------------
 */
+
+.alert {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100%;
+  z-index: 100;
+}
+
 .input {
   border-radius: 20px !important;
   background-color: var(--gray) !important;
@@ -56,7 +66,7 @@ custom styles ------------------------
 
 .nav-link {
   color: var(--purple-pink) !important;
-  padding: 2px;
+  padding: 2px 8px !important;
   border-radius: 20px;
   text-decoration: underline 1px var(--purple-pink);
   transition: all 0.3s ease-in-out;
@@ -65,16 +75,6 @@ custom styles ------------------------
   background-color: var(--purple-pink);
   color: var(--dark-blue) !important;
   text-decoration: underline 1px var(--dark-blue);
-}
-
-@media (min-width: 700px) {
-  #search-form-custom {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0px !important;
-  }
 }
 
 #search-form-custom input:focus,
@@ -138,7 +138,7 @@ custom styles ------------------------
 .auth-form {
   display: block;
   width: 60%;
-  margin: 32px auto 0;
+  height: fit-content;
   background-color: var(--dark-blue);
   border-radius: 40px;
   padding: 32px 72px;
@@ -214,4 +214,40 @@ custom styles ------------------------
   height: 100%;
   object-fit: cover;
   opacity: 0.6;
+}
+
+@media (max-width: 700px) {
+  html,
+  body {
+    font-size: 14px;
+  }
+  nav {
+    padding: 7px !important;
+  }
+  #small-nav-header {
+    height: 70px !important;
+  }
+  .navbar-brand {
+    transform: scale(65%);
+  }
+  .navbar-brand span {
+    display: none;
+  }
+  .content-full-screen {
+    height: calc(100vh - 84px);
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-item {
+    padding: 12px 0 !important;
+    align-items: center !important;
+    gap: 18px !important;
+  }
+  #small-nav-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }

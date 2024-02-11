@@ -63,9 +63,62 @@ const app = () => {
     });
   };
 
+  const setMyWeatherButton = () => {
+    if (window.location.pathname != "/current-weather/") return;
+
+    const btn = document.querySelector("#my-weather");
+
+    const getLocation = () => {
+      if ("geolocation" in navigator) {
+        // Prompt user for permission to access their location
+        navigator.geolocation.getCurrentPosition(
+          // Success callback function
+          (position) => {
+            // Get the user's latitude and longitude coordinates
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            fetch("/device-loc/", {
+              method: "POST",
+              body: JSON.stringify({
+                lat: lat,
+                lon: lon,
+              }),
+              headers: {
+                "Content-type": "application/json; charset=UTF-8",
+              },
+            })
+              .then((res) => {
+                if (res.redirected) {
+                  window.location.href = res.url;
+                  console.log("redirected");
+                }
+              })
+              .catch((e) => console.error(e));
+          },
+          // Error callback function
+          (error) => {
+            // Handle errors
+            console.error("Error getting user location:", error);
+            alert("Error getting browser location. Getting location by IP.");
+            window.location.href = `${window.location.pathname}?search=MY-LOCATION`;
+          }
+        );
+      } else {
+        // Geolocation is not supported by the browser
+        alert("Browser geolocation not allowed. Getting location by IP.");
+        window.location.href = `${window.location.pathname}?search=MY-LOCATION`;
+      }
+    };
+
+    btn.addEventListener("click", getLocation);
+  };
+
+  setMyWeatherButton();
   selectUrlChange();
   handleShowPasswordIcons();
   adjustSearch();
+
   window.addEventListener("resize", adjustSearch);
 };
 

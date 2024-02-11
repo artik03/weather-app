@@ -30,7 +30,6 @@ larger_capital_cities = [
     "Seoul",
     "Hanoi",
     "Oslo",
-    "Bogotá",
     "Budapest",
     "Amman",
     "Montevideo",

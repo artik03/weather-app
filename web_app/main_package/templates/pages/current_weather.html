@@ -6,44 +6,120 @@ block main %}
       height: 100%;
       width: 50%;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
     "
   >
     <form action="/current-weather/" method="get">
-      <button class="current-weather-btn" type="submit">Random</button>
+      <button class="weather-button" type="submit">Random</button>
     </form>
 
-    <form method="post" action="/current-weather/">
-      <input type="hidden" name="search" value="MY-LOCATION" />
-      <button class="current-weather-btn" type="submit">My weather</button>
-    </form>
+    <button class="weather-button" id="my-weather" type="submit">
+      My weather
+    </button>
 
     <select
-      class="form-select current-weather-btn"
+      class="form-select weather-button"
       aria-label="Favourite city select"
       id="city-select"
     >
-      {% if user.is_authenticated %}
       <option selected disabled>My favourite cities</option>
-      {% for city in favCityList %}
+      {% if user.is_authenticated %} {% for city in favCityList %}
       <option value="{{ city.name }}">{{ city.name }}</option>
-      {% endfor %} {% else %}
-      <option selected disabled>Login to add favourite cities</option>
-      {% endif %}
+      {% endfor %} {% endif %}
     </select>
   </div>
-  <div id="weather-card">
-    {%if weatherData.name == "NOT FOUND"%}
-    <p>Sorry we couldn't find city you are looking for :(</p>
-    {%else%}
-    <p>City: {{weatherData["name"]}}</p>
-    <p>Coutry: {{weatherData["sys"]["country"]}}</p>
-    <p>Temperature: {{weatherData["main"]["temp"]}}</p>
-    <p>Description: {{weatherData["weather"][0]["description"]}}</p>
-    <p>Humidity: {{weatherData["main"]["humidity"]}}</p>
-    <p>Wind speed: {{weatherData["wind"]["speed"]}}</p>
-    {%endif%}
+  <div style="height: 100%; width: 50%; position: relative">
+    <div
+      id="weather-card"
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 75%;
+        width: 75%;
+
+        background: var(--dark-blue);
+        background: linear-gradient(
+          0deg,
+          var(--dark-blue) 0%,
+          var(--purple-blue) 100%
+        );
+        border-radius: 20px;
+      "
+    >
+      {%if weatherData.name == "NOT FOUND"%}
+      <p
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          text-align: center;
+          width: 100%;
+          color: var(--purple-pink);
+          padding: 32px;
+        "
+      >
+        Sorry we couldn't find city you are looking for :(
+      </p>
+      {%else%}
+      <div
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          padding: 32px;
+          text-align: center;
+          width: 100%;
+          height: 100%;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: 10% 1fr 1fr 1fr;
+          justify-items: center;
+          align-items: center;
+          column-gap: 10px;
+          row-gap: 15px;
+          grid-template-areas:
+            'location .'
+            'main icon'
+            'statsname statsvalue'
+            'sunrise sunset';
+        "
+      >
+        <div style="grid-area: location">
+          <p>{{weatherData["name"]}} {{weatherData["sys"]["country"]}}</p>
+        </div>
+
+        <div style="grid-area: main">
+          <p>Temperature: {{weatherData["main"]["temp"]}}</p>
+          <p>Description: {{weatherData["weather"][0]["description"]}}</p>
+        </div>
+
+        <div style="grid-area: icon">icon</div>
+
+        <div style="grid-area: statsname">
+          <p>Humidity:</p>
+          <p>Wind speed:</p>
+        </div>
+
+        <div style="grid-area: statsvalue">
+          <p>{{weatherData["main"]["humidity"]}}</p>
+          <p>{{weatherData["wind"]["speed"]}}</p>
+        </div>
+
+        <div style="grid-area: sunrise">
+          <p>{{weatherData["sys"]["sunrise"]}}</p>
+        </div>
+        <div style="grid-area: sunset">
+          <p>{{weatherData["sys"]["sunset"]}}</p>
+        </div>
+      </div>
+      {%endif%}
+    </div>
+    {% endblock main %}
   </div>
 </div>
-{% endblock main %}
