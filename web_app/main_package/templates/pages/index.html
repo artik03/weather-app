@@ -5,52 +5,67 @@ block main %}
   class="content-full-screen"
   style="background-color: var(--dark-blue)"
 >
-  <div
-    style="
-      position: absolute;
-      top: 56px;
-      left: 96px;
-      color: white;
-      z-index: 50px;
-    "
-  >
-    <h1>Welcome to Weather.io</h1>
-    <p>
-      Our platform brings you the world's weather in real-time, right at your
-      fingertips.
-    </p>
-
-    <h2>Why Choose Us?</h2>
-    <li>🌍 Worldwide Coverage: Explore current conditions across the globe.</li>
-    <li>🚀 Instant Updates: Stay ahead with lightning-fast weather updates.</li>
-    <li>
-      🎨 Visually Stunning: Our vibrant interface makes checking weather a
-      delight.
-    </li>
-    <h2>Seamless Experience:</h2>
-
-    <li>
-      🔍 Intuitive Search: Effortlessly find weather info for any location.
-    </li>
-    <li>📈 Detailed Insights: Dive deep into temperature, wind, and more.</li>
+  <div style="height: 100%; flex: 1.5; padding-left: 10%; padding-top: 4%">
+    <div>
+      <h2 style="color: var(--purple-pink)">Welcome to</h2>
+      <h1 style="color: var(--pink)">WeatherFrog</h1>
+      <br />
+      <h4 style="color: var(--purple-pink); width: 60%">
+        Find out what <u>weather awaits you outside</u> with us just
+        <u>with a few clicks</u>
+      </h4>
+      <br />
+      <h3 style="color: var(--pink)">Want to be informed 24 / 7 ?</h3>
+      <h4 style="color: var(--purple-pink)">
+        Get our desktop widget app for <u>FREE</u>
+      </h4>
+      <br />
+      <a
+        class="btn btn-download btn-icon-position"
+        style="
+          position: relative;
+          z-index: 100;
+          border-radius: 40px;
+          font-size: 1.5rem;
+          padding: 12px 48px;
+        "
+        href="/download"
+        role="button"
+        >{%include "icons/download.svg"%}DOWNLOAD APP</a
+      >
+    </div>
   </div>
-
-  <div style="width: 33.33%; height: 100%">
+  <div style="flex: 1; position: relative">
     <img
-      src="{{url_for('static', filename='images/pic1.jpg') }}"
-      class="landing-img"
+      style="
+        border-radius: 64% 20% 30% 58% / 36% 31% 61% 57%;
+        position: absolute;
+        height: 23rem;
+        top: 35%;
+        left: 35%;
+        transform: translate(-50%, -50%);
+      "
+      decoding="async"
+      loading="lazy"
+      src="{{url_for('static', filename='images/umbrellasImg.jpg') }}"
+      class="blob-umbrellas"
+      alt="Picture of umbrellas symbolizing weather forecast"
     />
-  </div>
-  <div style="width: 33.33%; height: 100%">
+
     <img
-      src="{{url_for('static', filename='images/pic2.jpg') }}"
-      class="landing-img"
-    />
-  </div>
-  <div style="width: 33.33%; height: 100%">
-    <img
-      src="{{url_for('static', filename='images/pic3.jpg') }}"
-      class="landing-img"
+      style="
+        border-radius: 51% 100% 57% 36% / 100% 100% 39% 22%;
+        position: absolute;
+        width: 16rem;
+        top: 75%;
+        left: 0;
+        transform: translate(-50%, -50%);
+      "
+      decoding="async"
+      loading="lazy"
+      src="{{url_for('static', filename='images/snowBus.jpg') }}"
+      class="blob-umbrellas"
+      alt="Picture of bus in a snowy weather"
     />
   </div>
 </div>
