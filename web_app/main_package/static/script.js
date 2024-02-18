@@ -100,13 +100,13 @@ const app = () => {
           (error) => {
             // Handle errors
             console.error("Error getting user location:", error);
-            alert("Error getting browser location. Getting location by IP.");
+            //alert("Error getting browser location. Getting location by IP.");
             window.location.href = `${window.location.pathname}?search=MY-LOCATION`;
           }
         );
       } else {
         // Geolocation is not supported by the browser
-        alert("Browser geolocation not allowed. Getting location by IP.");
+        //alert("Browser geolocation not allowed. Getting location by IP.");
         window.location.href = `${window.location.pathname}?search=MY-LOCATION`;
       }
     };

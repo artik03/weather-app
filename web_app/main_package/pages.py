@@ -76,6 +76,8 @@ def current_weather():
             capCity = data['country']['capital']
         except: 
             flash("Sorry something went wrong. We couldn't get your location :(", category='error-global')
+            
+        flash("To get more precise results allow browser location.", category='warning-global')
         
         return redirect(url_for('pages.current_weather', search=capCity))
 
