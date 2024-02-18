@@ -86,6 +86,7 @@ def current_weather():
         weather_data, error = getWeatherdata(url)
 
         if error:
+            weather_data = {}
             weather_data["name"] = "NOT FOUND"
         
     favCityList = []
@@ -108,21 +109,31 @@ def profile():
     
     if request.method == 'POST':
         city_name = request.form.get('newCity')
+        city_name = city_name.replace(" ", "%20")
+        
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={OPEN_WEATHER_MAP_KEY}&units=metric"                 
+        weather_data, error = getWeatherdata(url)
+        
+        if error:
+            flash(f"Sorry, we don't provide weather forecast for {city_name}. Check for spelling mistakes.", 'warning-global')
+            sorted_cities = sorted(current_user.city, key=lambda city: city.name)
+            return render_template('pages/profile.html', favCityList=sorted_cities)
+        
+        city_name = city_name.replace("%20", " ")
         city_to_add = City.query.filter_by(name = request.form.get('newCity')).first()
        
         if city_to_add in current_user.city:
             flash('This city already exists in your list', 'warning-global')
         else:
-            favcity = city_to_add
-            if not favcity:
-                favcity = City(name=city_name)
-                db.session.add(favcity)
+            if not city_to_add:
+                city_to_add = City(name=city_name)
+                db.session.add(city_to_add)
             
-            current_user.city.append(favcity)
+            current_user.city.append(city_to_add)
             db.session.commit()
             
-    
-    return render_template('pages/profile.html', favCityList=current_user.city)
+    sorted_cities = sorted(current_user.city, key=lambda city: city.name)
+    return render_template('pages/profile.html', favCityList=sorted_cities)
 
 @pages.post('/profile/del-city/<city_name>')
 @login_required

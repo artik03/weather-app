@@ -5,8 +5,11 @@ block main %}
   class="content-full-screen"
   style="background-color: var(--dark-blue)"
 >
-  <div style="height: 100%; flex: 1.5; padding-left: 10%; padding-top: 4%">
-    <div>
+  <div
+    id="index-container"
+    style="height: 100%; flex: 1.5; padding-left: 10%; padding-top: 4%"
+  >
+    <div id="index-left">
       <h2 style="color: var(--purple-pink)">Welcome to</h2>
       <h1 style="color: var(--pink)">WeatherFrog</h1>
       <br />
@@ -35,7 +38,7 @@ block main %}
       >
     </div>
   </div>
-  <div style="flex: 1; position: relative">
+  <div id="index-right" style="flex: 1; position: relative">
     <img
       style="
         border-radius: 64% 20% 30% 58% / 36% 31% 61% 57%;

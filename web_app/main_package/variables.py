@@ -46,6 +46,6 @@ larger_capital_cities = [
     "Amsterdam",
     "Brussels",
     "Prague",
-    "Brasília",
+    "Brazil",
     "Copenhagen",
     ]

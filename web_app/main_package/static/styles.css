@@ -115,10 +115,24 @@ custom styles ------------------------
 }
 
 #search-form-custom button:hover,
-.auth-form button:hover {
+.submit-button,
+#delete-city-btn {
+  transition: all 0.3s ease;
+}
+
+#search-form-custom button:hover {
   transform: scale(105%);
   background-color: var(--purple-pink) !important;
   color: var(--dark-blue) !important;
+}
+
+.submit-button:hover {
+  color: var(--purple-pink);
+}
+
+#delete-city-btn {
+  outline: solid 2px var(--purple-pink);
+  outline-offset: 0;
 }
 
 .btn-download {
@@ -130,6 +144,9 @@ custom styles ------------------------
   outline: solid 2px var(--purple-pink);
   outline-offset: 0;
 }
+
+#delete-city-btn:hover,
+.submit-button:hover,
 .btn-download:hover {
   transform: scale(103%);
   outline-offset: 2px;
@@ -201,7 +218,7 @@ custom styles ------------------------
   background-image: url("./svgs/waveLeft.svg");
   height: 30%;
   width: 30%;
-  background-position: left;
+  background-position: left bottom;
   background-repeat: no-repeat;
   background-size: contain;
   bottom: 0;
@@ -213,11 +230,77 @@ custom styles ------------------------
   background-image: url("./svgs/waveRight.svg");
   height: 30%;
   width: 30%;
-  background-position: right;
+  background-position: right bottom;
   background-repeat: no-repeat;
   background-size: contain;
   bottom: 0;
   right: 0;
+}
+
+.select-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+#arrow-icon {
+  position: absolute;
+  top: 52%;
+  right: 18px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+#weather-card-content p {
+  margin: 0;
+  font-weight: bold;
+}
+
+@media (max-width: 992px) {
+  .nav-item {
+    padding: 12px 0 !important;
+    align-items: center !important;
+    gap: 18px !important;
+  }
+  #small-nav-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #index-container {
+    padding-left: 0 !important;
+  }
+  #index-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  #index-left h4 {
+    text-align: center;
+  }
+
+  #index-right {
+    display: none;
+  }
+
+  #card-page-buttons {
+    width: 35% !important;
+  }
+
+  #card-page-card {
+    width: 65% !important;
+  }
+  #weather-card {
+    width: 90% !important;
+  }
+  .auth-form {
+    width: 80% !important;
+    padding: 24px 32px !important;
+  }
 }
 
 @media (max-width: 700px) {
@@ -240,18 +323,62 @@ custom styles ------------------------
   .content-full-screen {
     height: calc(100vh - 84px);
   }
+  #profile-section {
+    width: 80% !important;
+  }
+  .auth-form h1 {
+    font-size: 3rem !important;
+    margin-bottom: 24px;
+  }
 }
 
-@media (max-width: 992px) {
-  .nav-item {
-    padding: 12px 0 !important;
-    align-items: center !important;
-    gap: 18px !important;
-  }
-  #small-nav-header {
-    width: 100%;
+@media (max-width: 600px) {
+  #current-weather-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+  }
+  #card-page-buttons {
+    width: 100% !important;
+    flex-direction: row !important;
+    height: fit-content !important;
+    padding: 8px 6px !important;
+    gap: 6px !important;
+    flex-wrap: wrap;
+  }
+
+  #card-page-buttons form,
+  #my-weather,
+  #select-wrapper {
+    width: 40% !important;
+  }
+
+  #card-page-card {
+    width: 100% !important;
+  }
+  #arrow-icon {
+    display: none !important;
+  }
+
+  h1 {
+    font-size: 3rem !important;
+  }
+
+  h2 {
+    font-size: 2rem !important;
+  }
+
+  h3 {
+    font-size: 1.5rem !important;
+  }
+
+  h4 {
+    font-size: 1rem !important;
+  }
+  #profile-section {
+    width: 90% !important;
+  }
+  .auth-form {
+    width: 90% !important;
+    padding: 24px 24px !important;
   }
 }
