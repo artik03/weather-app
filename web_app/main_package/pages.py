@@ -64,7 +64,6 @@ def current_weather():
         ip = request.remote_addr
         capCity = None
         try: 
-            ip = '84.245.80.28' # to do
             url = f'https://api.geoapify.com/v1/ipinfo?ip={ip}&apiKey={GEOAPIFY_KEY}'
             
             headers = CaseInsensitiveDict()
