@@ -1,5 +1,12 @@
 import datetime
 import urllib.request, json
+import socket
+import requests
+from ip2geotools.databases.noncommercial import DbIpCity
+
+def getIpLocation(ip):
+    res = DbIpCity.get(ip, api_key="free")
+    return res
 
 def timestamp_to_time(timestamp):
     dt_object = datetime.datetime.utcfromtimestamp(timestamp)

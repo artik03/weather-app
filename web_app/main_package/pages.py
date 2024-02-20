@@ -1,11 +1,9 @@
 import random
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
-import requests
-from requests.structures import CaseInsensitiveDict
-from .helper import getWeatherdata
+from .helper import getIpLocation, getWeatherdata
 
-from .settings import GEOAPIFY_KEY, OPEN_WEATHER_MAP_KEY
+from .settings import OPEN_WEATHER_MAP_KEY
 from .variables import larger_capital_cities as capital_cities
 from .models import City
 from . import db
@@ -62,23 +60,13 @@ def current_weather():
     # my location if browser location is not permited
     if search == 'MY-LOCATION':
         ip = request.remote_addr
-        capCity = None
-        try: 
-            url = f'https://api.geoapify.com/v1/ipinfo?ip={ip}&apiKey={GEOAPIFY_KEY}'
-            
-            headers = CaseInsensitiveDict()
-            headers["Accept"] = "application/json"
+        ip = "84.245.80.28"
 
-            res = requests.get(url, headers=headers)
-            data = res.json()
-            
-            capCity = data['country']['capital']
-        except: 
-            flash("Sorry something went wrong. We couldn't get your location :(", category='error-global')
-            
+        data = getIpLocation(ip)
+
         flash("To get more precise results allow browser location.", category='warning-global')
         
-        return redirect(url_for('pages.current_weather', search=capCity))
+        return redirect(url_for('pages.current_weather', lat=data.latitude, lon=data.longitude))
 
     if not lat:
         search = search.replace(" ", "%20")
