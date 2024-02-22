@@ -2,8 +2,10 @@ import random
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 from .helper import getIpLocation, getWeatherdata
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-from .settings import OPEN_WEATHER_MAP_KEY
 from .variables import larger_capital_cities as capital_cities
 from .models import City
 from . import db
@@ -40,7 +42,7 @@ def current_weather():
     
     # check for coords
     if lat and lon:
-        url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OPEN_WEATHER_MAP_KEY}&units=metric"
+        url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={app.config}&units=metric"
         weather_data, error = getWeatherdata(url)
         
         # if error redirect to ip location
@@ -70,7 +72,7 @@ def current_weather():
 
     if not lat:
         search = search.replace(" ", "%20")
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={search}&appid={OPEN_WEATHER_MAP_KEY}&units=metric"
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={search}&appid={os.getenv('OPEN_WEATHER_MAP_KEY')}&units=metric"
                     
         weather_data, error = getWeatherdata(url)
 

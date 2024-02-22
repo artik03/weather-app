@@ -1,13 +1,15 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from itsdangerous import URLSafeTimedSerializer
 
 db = SQLAlchemy()
 db_name = 'weather.db'
 
 def create_app():
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "secret key"
+    app.config.from_pyfile('settings.py')
+    ts = URLSafeTimedSerializer(app.config["SECRET_KEY"])
     app.config.from_pyfile('settings.py')
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_name
     db.init_app(app)
