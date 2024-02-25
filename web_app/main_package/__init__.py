@@ -1,17 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from itsdangerous import URLSafeTimedSerializer
+from flask_jwt_extended import JWTManager
 
+jwt = JWTManager()
 db = SQLAlchemy()
-db_name = 'weather.db'
 
-def create_app():
+def create_app(configuration):
     app = Flask(__name__)
-    app.config.from_pyfile('settings.py')
-    ts = URLSafeTimedSerializer(app.config["SECRET_KEY"])
-    app.config.from_pyfile('settings.py')
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_name
+    app.config.from_object(configuration)
     db.init_app(app)
 
     from .pages import pages as pages_blueprints
@@ -32,5 +29,7 @@ def create_app():
     
     with app.app_context():
         db.create_all()
+        
+    jwt.init_app(app)
 
     return app

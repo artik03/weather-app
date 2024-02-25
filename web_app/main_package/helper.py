@@ -1,7 +1,5 @@
 import datetime
 import urllib.request, json
-import socket
-import requests
 from ip2geotools.databases.noncommercial import DbIpCity
 
 def getIpLocation(ip):

@@ -1,10 +1,16 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
+from .email import send_email
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
+from itsdangerous import URLSafeTimedSerializer
 from flask_login import login_user, logout_user, login_required
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 auth = Blueprint('auth', __name__)
+ts = URLSafeTimedSerializer(os.getenv('SECRET_KEY'))
 
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
@@ -58,3 +64,29 @@ def logout():
     logout_user()
     flash("You successfully logged out", 'success-global')
     return redirect(url_for('pages.home'))
+
+@auth.route('/reset_password', methods=["GET", "POST"])
+def reset_password():
+    if request.method == 'GET':
+        return render_template('pages/reset_password.html')
+    
+    if request.method == 'POST':
+
+        email = request.form.get('email')
+        if len(email) < 5: 
+            flash('Email should be at least 5 characters long', 'error')
+            return render_template('pages/reset_password.html')
+        
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            send_email(user)
+            flash("Please check your email inbox for a link to reset your password. Thank you!", 'warning-global')
+            return redirect(url_for('auth.login'))
+        else: 
+            flash('No user with provided email exists.', 'error')
+            return render_template('pages/reset_password.html')
+        
+@auth.route('/change_password/<token>', methods=['GET', 'POST'])
+def change_password(token):
+    return render_template('pages/change_password.html', token=token)

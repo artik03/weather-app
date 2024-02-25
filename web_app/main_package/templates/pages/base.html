@@ -24,7 +24,7 @@
       <div id="small-nav-header">
         <a
           class="navbar-brand"
-          href="/"
+          href="{{ url_for('pages.home') }}"
           style="position: relative; margin-right: 120px"
           ><!-- transform scale(smaller) in media query-->
           {% include "icons/logo.svg" %}
@@ -112,7 +112,9 @@
                 <!--to do autocomplete-->
               </button>
             </form>
-            <a class="nav-link" href="/current-weather">Current weather</a>
+            <a class="nav-link" href="{{ url_for('pages.current_weather') }}"
+              >Current weather</a
+            >
           </li>
           <li id="form-for-sm-display-placeholder">
             <!--static/script.js-->
@@ -129,25 +131,38 @@
         >
           <a
             class="btn btn-download btn-icon-position"
-            href="/download"
+            href="{{ url_for('pages.download') }}"
             role="button"
             >{%include "icons/download.svg"%}DOWNLOAD APP</a
           >
           {% if current_user.is_authenticated %}
           <div id="navbar-auth-links">
-            <a class="btn btn-icon-position" href="/profile" role="button"
+            <a
+              class="btn btn-icon-position"
+              href="{{ url_for('pages.profile') }}"
+              role="button"
               >{%include "icons/profile.svg"%} Profile
             </a>
-            <a class="btn btn-icon-position" href="/logout" role="button">
+            <a
+              class="btn btn-icon-position"
+              href="{{ url_for('auth.logout') }}"
+              role="button"
+            >
               {%include "icons/logout.svg"%}Logout
             </a>
           </div>
           {% endif %} {% if not current_user.is_authenticated %}
           <div id="navbar-auth-links">
-            <a class="btn btn-icon-position" href="/login" role="button"
+            <a
+              class="btn btn-icon-position"
+              href="{{ url_for('auth.login') }}"
+              role="button"
               >{%include "icons/login.svg"%}log in</a
             >
-            <a class="btn btn-icon-position" href="/sign-up" role="button"
+            <a
+              class="btn btn-icon-position"
+              href="{{ url_for('auth.sign_up') }}"
+              role="button"
               >{%include "icons/signup.svg"%}sign up</a
             >
           </div>
@@ -164,16 +179,9 @@
         <span
           type="button"
           class="close"
-          data-bs-dismiss="alert"
+          data-dismiss="alert"
           aria-label="Close"
-        >
-          <span
-            type="button"
-            class="close"
-            data-dismiss="alert"
-            aria-label="Close"
-            ><span aria-hidden="true">&times;</span></span
-          ></span
+          ><span aria-hidden="true">&times;</span></span
         >
       </div>
       {%elif category == "warning-global" %}
@@ -182,16 +190,20 @@
         <span
           type="button"
           class="close"
-          data-bs-dismiss="alert"
+          data-dismiss="alert"
           aria-label="Close"
+          ><span aria-hidden="true">&times;</span></span
         >
-          <span
-            type="button"
-            class="close"
-            data-dismiss="alert"
-            aria-label="Close"
-            ><span aria-hidden="true">&times;</span></span
-          ></span
+      </div>
+      {%elif category == "error-global" %}
+      <div class="alert alert-danger alter-dismissable fade show" role="alert">
+        {{message}}
+        <span
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          ><span aria-hidden="true">&times;</span></span
         >
       </div>
       {%endif%} {%endfor%} {%endif%} {%endwith%}

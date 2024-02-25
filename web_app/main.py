@@ -1,8 +1,10 @@
 from flask import Flask
 from main_package import create_app
 import os
+from config import Configuration
 
-app = create_app()
+app = create_app(Configuration)
+
 
 port = int(os.environ.get('PORT', 5000))
     

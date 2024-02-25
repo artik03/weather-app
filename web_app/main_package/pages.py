@@ -2,6 +2,7 @@ import random
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 from .helper import getIpLocation, getWeatherdata
+
 import os
 from dotenv import load_dotenv
 load_dotenv()
