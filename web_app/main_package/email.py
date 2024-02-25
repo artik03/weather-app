@@ -21,7 +21,7 @@ def send_email(user):
     msg['From'] = sender_email
     msg['To'] = 'artom.hanzel@gmail.com' # receiver mail
     
-    html_msg = render_template('email/reset _mail.html', token=token)
+    html_msg = render_template('email/reset_mail.html', token=token)
     msg.attach(MIMEText(html_msg, 'html'))
 
     context = ssl.create_default_context()
