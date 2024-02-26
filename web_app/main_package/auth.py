@@ -8,6 +8,8 @@ from flask_login import login_user, logout_user, login_required
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import jwt
+from time import time
 
 auth = Blueprint('auth', __name__)
 ts = URLSafeTimedSerializer(os.getenv('SECRET_KEY'))
@@ -89,4 +91,41 @@ def reset_password():
         
 @auth.route('/change_password/<token>', methods=['GET', 'POST'])
 def change_password(token):
-    return render_template('pages/change_password.html', token=token)
+    
+    decoded_token = None
+    try:
+        decoded_token = jwt.decode(token, key=os.getenv('SECRET_KEY'), algorithms=["HS256"])
+    except Exception as e:
+        print(e)
+        flash('No token found.', 'error-global')
+        return redirect(url_for('auth.login'))
+
+    email = decoded_token['reset_password']
+    user = User.query.filter_by(email=email).first()
+        
+    if not user:
+        flash('No user found.', 'error-global')
+        return redirect(url_for('auth.login'))
+        
+    exp_time = decoded_token['exp']
+    if exp_time < time():
+        flash('Token has expired.', 'error-global')
+        return redirect(url_for('auth.login'))
+    
+    if request.method == 'GET':
+        return render_template('pages/change_password.html', token=token)
+    
+    if request.method == 'POST':
+        password = request.form.get('password')
+        repeat_password  = request.form.get('password-repeat')
+        
+        if password != repeat_password:
+            flash("Your password doesn't match with repeated password", 'error')
+            return render_template('pages/change_password.html', token=token)
+        
+        hashed_password = generate_password_hash(password, "pbkdf2")
+        user.password = hashed_password
+        db.session.commit()
+        
+        flash("Your password was succesfully changed", 'success-global')
+        return redirect(url_for('auth.login'))

@@ -43,7 +43,7 @@ def current_weather():
     
     # check for coords
     if lat and lon:
-        url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={app.config}&units=metric"
+        url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={os.getenv('OPEN_WEATHER_MAP_KEY')}&units=metric"
         weather_data, error = getWeatherdata(url)
         
         # if error redirect to ip location
@@ -63,7 +63,6 @@ def current_weather():
     # my location if browser location is not permited
     if search == 'MY-LOCATION':
         ip = request.remote_addr
-        ip = "84.245.80.28"
 
         data = getIpLocation(ip)
 
@@ -103,7 +102,7 @@ def profile():
         city_name = request.form.get('newCity')
         city_name = city_name.replace(" ", "%20")
         
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={OPEN_WEATHER_MAP_KEY}&units=metric"                 
+        url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={os.getenv('OPEN_WEATHER_MAP_KEY')}&units=metric"                 
         weather_data, error = getWeatherdata(url)
         
         if error:

@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 def send_email(user):
-    expires = 500
+    expires = 900
     
     sender_email = os.getenv('MAIL_USERNAME')
     receiver_email = user.email
@@ -19,7 +19,7 @@ def send_email(user):
     msg = MIMEMultipart('alternative')
     msg['Subject'] = "WeatherFrog | Password reset"
     msg['From'] = sender_email
-    msg['To'] = 'artom.hanzel@gmail.com' # receiver mail
+    msg['To'] = receiver_email 
     
     html_msg = render_template('email/reset_mail.html', token=token)
     msg.attach(MIMEText(html_msg, 'html'))
