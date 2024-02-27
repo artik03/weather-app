@@ -13,6 +13,9 @@ from . import db
 
 pages = Blueprint('pages', __name__)
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 @pages.route("/")
 def home():
     return render_template('pages/index.html')
@@ -67,7 +70,10 @@ def current_weather():
             ip = request.environ['REMOTE_ADDR']
         else:
             ip = request.environ['HTTP_X_FORWARDED_FOR']
-            
+        
+         # Log the IP address
+        logging.debug(f"IP Address: {ip}")
+        
         data = getIpLocation(ip)
 
         flash("To get more precise results allow browser location.", category='warning-global')
