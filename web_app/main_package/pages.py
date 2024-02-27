@@ -69,7 +69,9 @@ def current_weather():
         if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
             ip = request.environ['REMOTE_ADDR']
         else:
-            ip = request.environ['HTTP_X_FORWARDED_FOR']
+            forwarded_ips = request.environ['HTTP_X_FORWARDED_FOR']
+            # Split the list of IP addresses and extract the client's IP
+            ip = forwarded_ips.split(',')[0].strip()
         
          # Log the IP address
         logging.debug(f"IP Address: {ip}")
