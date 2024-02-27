@@ -13,9 +13,6 @@ from . import db
 
 pages = Blueprint('pages', __name__)
 
-import logging
-logging.basicConfig(level=logging.DEBUG)
-
 @pages.route("/")
 def home():
     return render_template('pages/index.html')
@@ -72,9 +69,6 @@ def current_weather():
             forwarded_ips = request.environ['HTTP_X_FORWARDED_FOR']
             # Split the list of IP addresses and extract the client's IP
             ip = forwarded_ips.split(',')[0].strip()
-        
-         # Log the IP address
-        logging.debug(f"IP Address: {ip}")
         
         data = getIpLocation(ip)
 
