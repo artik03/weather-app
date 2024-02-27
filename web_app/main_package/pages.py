@@ -67,6 +67,7 @@ def current_weather():
             ip = request.environ['REMOTE_ADDR']
         else:
             ip = request.environ['HTTP_X_FORWARDED_FOR']
+            
         data = getIpLocation(ip)
 
         flash("To get more precise results allow browser location.", category='warning-global')
