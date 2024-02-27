@@ -62,8 +62,10 @@ def current_weather():
     
     # my location if browser location is not permited
     if search == 'MY-LOCATION':
-        ip = request.remote_addr
-        print("ip: " + ip)
+        if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+            ip = request.environ['REMOTE_ADDR']
+        else:
+            ip = request.environ['HTTP_X_FORWARDED_FOR']
         data = getIpLocation(ip)
 
         flash("To get more precise results allow browser location.", category='warning-global')
