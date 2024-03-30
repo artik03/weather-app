@@ -1,0 +1,11 @@
+# java
+/.metadata/
+bin
+config.properties
+.settings
+
+# python
+.env
+__pycache__
+.venv
+instance

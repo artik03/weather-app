@@ -96,7 +96,6 @@ def change_password(token):
     try:
         decoded_token = jwt.decode(token, key=os.getenv('SECRET_KEY'), algorithms=["HS256"])
     except Exception as e:
-        print(e)
         flash('No token found.', 'error-global')
         return redirect(url_for('auth.login'))
 
