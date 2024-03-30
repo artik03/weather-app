@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta
+      name="description"
+      content="Web application providing information about current weather for your or any other location. You can also download a desktop application that allows you to conveniently check the latest weather conditions at any time."
+    />
+    <meta
+      name="keywords"
+      content="Weather, Weather Forecast, Current Weather, Weather Frog, WeatherFrog, Desktop application, "
+    />
+    <meta name="author" content="Artik03" />
     <title>{% block title %}{% endblock title %}</title>
     <link
       rel="stylesheet"
@@ -14,6 +23,10 @@
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/wfIcon.ico') }}"
     />
   </head>
   <body>
