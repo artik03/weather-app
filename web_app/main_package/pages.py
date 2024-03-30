@@ -1,5 +1,5 @@
 import random
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, send_file, url_for
 from flask_login import login_required, current_user
 from .helper import getIpLocation, getWeatherdata
 
@@ -120,7 +120,7 @@ def profile():
         city_to_add = City.query.filter_by(name = request.form.get('newCity')).first()
        
         if city_to_add in current_user.city:
-            flash('This city already exists in your list', 'warning-global')
+            flash('This city already exists in your list.', 'warning-global')
         else:
             if not city_to_add:
                 city_to_add = City(name=city_name)
@@ -143,9 +143,14 @@ def delete_city(city_name):
             db.session.remove(city_to_delete)
         db.session.commit()
     else:
-        flash('City you are trying to delete is not in your list', category='warning-global')
+        flash('City you are trying to delete is not in your list.', category='warning-global')
     return redirect(url_for('pages.profile'))
 
-@pages.route('/download-app/') # to do 
+@pages.route('/download-app/')
 def download():
-    pass
+    exe_path = 'uploads/WeatherFrog.exe'
+    
+    return send_file(exe_path, as_attachment=True)
+    
+    # flash('Your app download has begun successfully!', category='success-global')
+    # return redirect(url_for("pages.home"))

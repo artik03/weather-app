@@ -1,5 +1,5 @@
 # java
-/.metadata/
+.metadata
 bin
 config.properties
 .settings
