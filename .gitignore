@@ -9,3 +9,4 @@ config.properties
 __pycache__
 .venv
 instance
+weather.db
