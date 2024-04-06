@@ -1,0 +1,5 @@
+# List of generated media files. The columns are tab-separated:
+# id | media file type | display name | media file name
+31	windows	Windows	WeatherFrog_Installer.exe
+34	unix	Unix Installer	WeatherFrog_Installer.sh
+35	macos	macOS Folder	WeatherFrog_Installer.dmg

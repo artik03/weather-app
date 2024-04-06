@@ -148,9 +148,20 @@ def delete_city(city_name):
 
 @pages.route('/download-app/')
 def download():
-    exe_path = 'uploads/WeatherFrog.exe'
+    
+    user_agent = request.user_agent.string
+    file = ""
+    if 'Windows' in user_agent:
+        file = "WeatherFrog_Installer.exe"
+    elif 'Linux' in user_agent:
+        file = "WeatherFrog_Installer.sh"
+    elif 'Mac' in user_agent:
+        file = "WeatherFrog_Installer.dmg"
+    else:
+        flash("Sorry, our app currently supports Windows, Linux, and macOS only.", category='warning-global')
+        return redirect(url_for("pages.home"))
+    
+    exe_path = 'uploads/' + file
     
     return send_file(exe_path, as_attachment=True)
     
-    # flash('Your app download has begun successfully!', category='success-global')
-    # return redirect(url_for("pages.home"))
